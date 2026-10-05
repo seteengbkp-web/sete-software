@@ -64,6 +64,8 @@ jobs:
         shell: bash
         run: |
           cd ..
+          git fetch origin main
+          git checkout origin/main -- versao-sistema.json
           python3 - << PY
           import json
           v = json.load(open('versao-sistema.json'))
@@ -80,4 +82,4 @@ jobs:
           git config user.email 'actions@github.com'
           git add SETE-Setup.exe versao-sistema.json
           git diff --cached --quiet && echo "Nada novo para publicar." || \
-            (git commit -m "Instalador ${{ steps.ver.outputs.sistema }}" && git push)
+            (git commit -m "Instalador ${{ steps.ver.outputs.sistema }}" && git pull --rebase origin main && git push)
