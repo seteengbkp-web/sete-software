@@ -1,0 +1,25 @@
+name: Restaurar pastas do projeto (uso unico)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restaurar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Desempacotar
+        run: |
+          ARQ=$(ls sete-desktop-src.tgz)
+          tar xzf "$ARQ" --strip-components=1
+          rm "$ARQ"
+      - name: Gravar
+        run: |
+          git config user.name  'Publicador SETE'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Restaurar pastas do projeto' || echo 'nada a gravar'
+          git push
